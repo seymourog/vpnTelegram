@@ -1,5 +1,6 @@
 <?php
 
+use App\Service\Telegram\Handler;
 use DefStudio\Telegraph\Telegraph;
 
 return [
@@ -21,7 +22,7 @@ return [
      *
      * For reference, see https://defstudio.github.io/telegraph/webhooks/overview
      */
-    'webhook_handler' => \App\Service\Telegram\Handler::class,
+    'webhook_handler' => Handler::class,
 
     /*
      * Sets the webhook URL that will be exposed by the server,
