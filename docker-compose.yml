@@ -32,7 +32,7 @@ services:
         image: 'nginx:latest'
         build:
             context: .
-            dockerfile: .docker/nginx/Dockerfile.prod
+            dockerfile: .docker/nginx.dev/Dockerfile.prod
         ports:
             - '80:80'
             - '443:443'
