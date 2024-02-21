@@ -1,6 +1,5 @@
 <?php
 
-use App\Service\Telegram\Handler;
 use DefStudio\Telegraph\Telegraph;
 
 return [
@@ -22,7 +21,7 @@ return [
      *
      * For reference, see https://defstudio.github.io/telegraph/webhooks/overview
      */
-    'webhook_handler' => Handler::class,
+    'webhook_handler' => \App\Service\Telegram\Handler::class,
 
     /*
      * Sets the webhook URL that will be exposed by the server,
@@ -42,7 +41,7 @@ return [
      * If enabled, Telegraph dumps received
      * webhook messages to logs
      */
-    'debug_mode' => false,
+    'debug_mode' => true,
 
     /*
      * If enabled, unknown webhook commands are

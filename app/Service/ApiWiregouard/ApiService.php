@@ -16,9 +16,9 @@ class ApiService
 
         $client = new Client();
 
-        $response = $client->request('POST', 'http://82.97.246.107:51821/api/session', [
+        $response = $client->request('POST', env('API_URL').'/api/session', [
             'json' => [
-                'password' => 'Flipper2020543672001!'
+                'password' => env('PASSWORD_API',''),
             ],
             'cookies' => self::$cookieJar
 
@@ -35,7 +35,7 @@ class ApiService
     {
         self::Auth();
         $client = new Client();
-        $response = $client->request('GET', 'http://82.97.246.107:51821/api/wireguard/client',[
+        $response = $client->request('GET', env('API_URL').'/api/wireguard/client',[
             'cookies' => self::$cookieJar
         ]);
 
@@ -53,7 +53,7 @@ class ApiService
         }
         self::Auth();
         $client = new Client();
-        $response = $client->request('POST', 'http://82.97.246.107:51821/api/wireguard/client', [
+        $response = $client->request('POST', env('API_URL').'/api/wireguard/client', [
             'cookies' => self::$cookieJar,
             'json' => [
                 'name' => $name
@@ -89,7 +89,7 @@ class ApiService
     {
         $id = self::getIdByName($name);
         $client = new Client();
-        $response = $client->request('GET', 'http://82.97.246.107:51821/api/wireguard/client/'.$id.'/qrcode.svg', [
+        $response = $client->request('GET', '/api/wireguard/client/'.$id.'/qrcode.svg', [
             'cookies' => self::$cookieJar
         ]);
         $body = $response->getBody()->getContents();
@@ -101,7 +101,7 @@ class ApiService
     {
         $id = self::getIdByName($name);
         $client = new Client();
-        $response = $client->request('GET','http://82.97.246.107:51821/api/wireguard/client/'.$id.'/configuration', [
+        $response = $client->request('GET',env('API_URL').'/api/wireguard/client/'.$id.'/configuration', [
             'cookies' => self::$cookieJar
         ]);
         $body = $response->getBody()->getContents();
@@ -114,7 +114,7 @@ class ApiService
     {
         $id = self::getIdByName($name);
         $client = new Client();
-        $response = $client->request('POST','http://82.97.246.107:51821/api/wireguard/client/'.$id.'/disable', [
+        $response = $client->request('POST',env('API_URL').'/api/wireguard/client/'.$id.'/disable', [
             'cookies' => self::$cookieJar
         ]);
         $body = $response->getBody()->getContents();
@@ -125,7 +125,7 @@ class ApiService
     {
         $id = self::getIdByName($name);
         $client = new Client();
-        $response = $client->request('POST','http://82.97.246.107:51821/api/wireguard/client/'.$id.'/enable', [
+        $response = $client->request('POST',env('API_URL').'/api/wireguard/client/'.$id.'/enable', [
             'cookies' => self::$cookieJar
         ]);
         $body = $response->getBody()->getContents();
@@ -137,7 +137,7 @@ class ApiService
     {
         $id = self::getIdByName($name);
         $client = new Client();
-        $response = $client->request('DELETE','http://82.97.246.107:51821/api/wireguard/client/'. $id, [
+        $response = $client->request('DELETE',env('API_URL').'/api/wireguard/client/'. $id, [
             'cookies' => self::$cookieJar
         ]);
         $body = $response->getBody()->getContents();
