@@ -3,6 +3,7 @@
 namespace App\Service\ApiWiregouard;
 
 use App\Models\ServiceVpn;
+use App\Repository\ServiceVpnRepository;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 
@@ -10,7 +11,7 @@ class ApiService
 {
     private static $cookieJar;
 
-    public static function Auth()
+    public static function Auth(): array|object
     {
         self::$cookieJar = new CookieJar();
 
@@ -31,7 +32,7 @@ class ApiService
         return ['statusCode' => $statusCode, 'body' => $body, 'head'=>$head];
     }
 
-    public static function getClients()
+    public static function getClients(): array
     {
         self::Auth();
         $client = new Client();
@@ -45,9 +46,9 @@ class ApiService
         return ['statusCode' => $statusCode, 'body' => $body];
     }
 
-    public  static function createClient($name)
+    public  static function createClient(string $name): array
     {
-        $serviceDb = ServiceVpn::where('name', $name)->get()->first();
+        $serviceDb = ServiceVpnRepository::GetByName($name);
         if($serviceDb !== null){
             return ['statusCode' => 400, 'body' => 'Client already exists'];
         }
@@ -61,18 +62,11 @@ class ApiService
         ]);
         $statusCode = $response->getStatusCode();
         $body = json_decode($response->getBody()->getContents(),true);
-        ServiceVpn::create([
-            'name' => $name,
-            'address' => (string)$body['address'],
-            'privateKey' => (string)$body['privateKey'],
-            'publicKey' => (string)$body['publicKey'],
-            'preSharedKey' => (string)$body['preSharedKey'],
-            'enabled' => true
-        ]);
+        ServiceVpnRepository::Create($name,$body);
         return ['statusCode' => $statusCode, 'body' => $body];
     }
 
-    public static function getIdByName($name)
+    public static function getIdByName(string $name): string|null
     {
         $clients = self::getClients();
         $body = $clients['body'];
@@ -85,19 +79,8 @@ class ApiService
         }
         return $id;
     }
-    public static function getQrCode($name)
-    {
-        $id = self::getIdByName($name);
-        $client = new Client();
-        $response = $client->request('GET', '/api/wireguard/client/'.$id.'/qrcode.svg', [
-            'cookies' => self::$cookieJar
-        ]);
-        $body = $response->getBody()->getContents();
 
-        return $body;
-    }
-
-    public static function getFile($name)
+    public static function getFile(string $name): string
     {
         $id = self::getIdByName($name);
         $client = new Client();
@@ -110,7 +93,7 @@ class ApiService
         return $fileName;
     }
 
-    public static function disableClient($name)
+    public static function disableClient(string $name)
     {
         $id = self::getIdByName($name);
         $client = new Client();
@@ -121,7 +104,7 @@ class ApiService
         return $body;
 
     }
-    public static function enableClient($name)
+    public static function enableClient(string $name)
     {
         $id = self::getIdByName($name);
         $client = new Client();
@@ -133,7 +116,7 @@ class ApiService
 
     }
 
-    public static function deleteClient($name)
+    public static function deleteClient(string $name)
     {
         $id = self::getIdByName($name);
         $client = new Client();
@@ -143,4 +126,5 @@ class ApiService
         $body = $response->getBody()->getContents();
         return $body;
     }
+
 }

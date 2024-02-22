@@ -10,6 +10,30 @@
 ## Телеграмм бот, для выдачи Vpn доступов Wireguard пользователям
 
 Для работы бота нужен wg-easy который будет крутиться у вас на сервере, который будет выполнять роль vpn
+## Запуск Wireguard 
+Для запуска Wireguard, вам нужно установить docker и docker-compose
+```bash
+curl -sSL https://get.docker.com | sh
+sudo usermod -aG docker $(whoami)
+exit
+```
+
+После установки докера, вы можете запустить wg-easy командой
+```bash
+docker run -d \
+--name=wg-easy \
+-e WG_HOST=IP_SERVER \
+-e PASSWORD=PASSWORD \
+-v ~/.wg-easy:/etc/wireguard \
+-p 51820:51820/udp \
+-p 51821:51821/tcp \
+--cap-add=NET_ADMIN \
+--cap-add=SYS_MODULE \
+--sysctl="net.ipv4.conf.all.src_valid_mark=1" \
+--sysctl="net.ipv4.ip_forward=1" \
+--restart unless-stopped \
+weejewel/wg-easy
+```
 
 ## Установка
 

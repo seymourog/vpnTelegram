@@ -18,12 +18,3 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-//Route::get('/auth-vpn', [App\Http\Controllers\VPNController::class, 'auth']);
-//Route::get('/client/all', [App\Http\Controllers\VPNController::class, 'getClients']);
-//Route::get('/client/create/{name}', [App\Http\Controllers\VPNController::class, 'createClient']);
-//Route::get('/client/qr/{name}', [App\Http\Controllers\VPNController::class, 'getQrCode'])->name('qrcode');
-//Route::get('/client/file/{name}', [App\Http\Controllers\VPNController::class, 'getFile']);
-//Route::get('/client/disable/{name}', [App\Http\Controllers\VPNController::class, 'disableClient']);
-//Route::get('/client/enable/{name}', [App\Http\Controllers\VPNController::class, 'enableClient']);
-//Route::get('/client/delete/{name}', [App\Http\Controllers\VPNController::class, 'deleteClient']);
